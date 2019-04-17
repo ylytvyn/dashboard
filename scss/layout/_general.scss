@@ -35,6 +35,9 @@ body, html {
 
 body {
 	font: 16px $font;
+	min-width: 500px;
+	min-height: 500px;
+	overflow: hidden;
 }
 
 .dialog {

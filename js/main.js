@@ -76,7 +76,7 @@
 			}
 
 			if (rightUser.password == passwordVal) {
-				$('.login, .dashboard').animate({'top': '-100vh'}, 1500);
+				$('.login, .dashboard').animate({'top': '-100vh'}, 1000);
 			} else {
 				generateError('#password', alerts.wrongPassword);
 			}
