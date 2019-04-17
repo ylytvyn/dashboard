@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Starter">
+	<meta name="author" content="Admin">
+	<title>JQuery Dashboard</title>
+
+	<link rel="icon" href="images/favicon.png">
+
+	<link rel="stylesheet" href="css/libs/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/styles.min.css">
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<section class="login">
+		<form class="login__form" action="#">
+			<h1 class="login__title">Log in</h1>
+			<div class="login__block">
+				<label class="login__label" for="username"><i class="far fa-user"></i></label>
+				<input class="login__field" type="text" name="username" id="username" placeholder="Username">
+			</div>
+			<div class="login__block">
+				<label class="login__label" for="password"><i class="fas fa-lock"></i></label>
+				<input class="login__field" type="password" name="password" id="password" placeholder="Password">
+				<i class="login__show-pass far fa-eye"></i>
+			</div>
+			<p class="login__forgot">Forgot your password? <i class="far fa-question-circle"></i></p>
+			<button type="button" class="login__button">Login to your account</button>
+		</form>
+	</section>
+
+	<section class="dashboard">
+		You're logged succesfully!
+	</section>
+
+	<!-- Scripts -->
+	<script src="js/libs/jquery-3.4.0.min.js"></script>
+	<script src="js/main.js"></script>
+
+	<!-- LiveReload Script -->
+	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+</body>
+</html>

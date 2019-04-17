@@ -1,0 +1,124 @@
+.login {
+	height: 100vh;
+	position: relative;
+	color: $white;
+	background: $blue-dark;
+	background: -moz-linear-gradient(-45deg, $blue-dark 0%, $blue-light 100%);
+	background: -webkit-linear-gradient(-45deg, $blue-dark 0%,$blue-light 100%);
+	background: linear-gradient(135deg, $blue-dark 0%,$blue-light 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$blue-dark}', endColorstr='#{$blue-light}',GradientType=1 );
+
+	&__form {
+		@include align(true, true);
+		width: 350px;
+	}
+
+	&__title {
+		font-size: 24px;
+		font-weight: 700;
+		margin-bottom: 35px;
+	}
+
+	&__block {
+		position: relative;
+		margin-bottom: 10px;
+		padding-bottom: 20px;
+
+		&.invalid {
+			color: $red;
+
+			.login__field {
+				border-bottom-color: $red;
+			}
+
+		}
+	}
+
+	&__label {
+		@include pos($t: 7px, $l: 5px);
+		font-size: 20px;
+		cursor: pointer;
+		transition: all .3s;
+
+		&:hover {
+			color: rgba(255, 255, 255, .5);
+		}
+	}
+
+	&__field {
+		width: 100%;
+		font: 18px/40px $font;
+		background: none;
+		color: $white;
+		border-bottom: 2px solid;
+		padding-left: 40px;
+
+		&::-webkit-input-placeholder {
+			color: $white;
+		}
+	}
+
+	&__error {
+		@include pos($b: 0, $l: 0);
+		font-size: 12px;
+		color: $red;
+	}
+
+	&__show-pass {
+		@include pos($r: 0, $t: 15px);
+		font-size: 18px;
+		cursor: pointer;
+		transition: all .3s;
+
+		&:hover {
+			color: rgba(255, 255, 255, .5);
+		}
+	}
+
+	&__forgot {
+		cursor: pointer;
+		margin-bottom: 20px;
+		font-weight: 300;
+		font-size: 14px;
+		display: inline-block;
+
+		span {
+			font-size: 12px;
+			background: rgba(255, 255, 255, .8);
+			color: $blue-dark;
+			padding: 3px 10px;
+			margin-left: 15px;
+			position: relative;
+
+			&::before {
+				@include triangle(rgba(255, 255, 255, .8), 7px, left);
+				left: 0;
+				top: 4px;
+			}
+		}
+	}
+
+	&__button {
+		@include size(100%, 60px);
+		font: 700 20px/60px $font;
+		background: $white;
+		cursor: pointer;
+		color: $blue-dark;
+		position: relative;
+		overflow: hidden;
+
+		&::after {
+			@include pos($t: 50%, $l: 50%);
+			@include size(400px, 400px);
+			content: '';
+			border-radius: 50%;
+			transform: translateX(-50%) translateY(-50%) scale(0);
+			transition: all .3s;
+			background: rgba(0, 0, 0, .2);
+		}
+
+		&:focus::after {
+			transform: translateX(-50%) translateY(-50%) scale(1);
+		}
+	}
+}
