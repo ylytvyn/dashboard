@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="description" content="Starter">
 	<meta name="author" content="Admin">
-	<title>JQuery Dashboard</title>
+	<title>Dashboard</title>
 
 	<link rel="icon" href="images/favicon.png">
 
+	<link rel="stylesheet" href="css/libs/font-awesome/all.min.css">
 	<link rel="stylesheet" href="css/libs/bootstrap-grid.min.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/styles.min.css">
 
 	<!--[if lt IE 9]>
@@ -19,30 +21,100 @@
 <body>
 	<section class="login">
 		<form class="login__form" action="#">
-			<h1 class="login__title">Log in</h1>
-			<div class="login__block">
-				<label class="login__label" for="username"><i class="far fa-user"></i></label>
-				<input class="login__field" type="text" name="username" id="username" placeholder="Username">
-			</div>
-			<div class="login__block">
-				<label class="login__label" for="password"><i class="fas fa-lock"></i></label>
-				<input class="login__field" type="password" name="password" id="password" placeholder="Password">
-				<i class="login__show-pass far fa-eye"></i>
-			</div>
-			<p class="login__forgot">Forgot your password? <i class="far fa-question-circle"></i></p>
-			<button type="button" class="login__button">Login to your account</button>
+		  <h1 class="login__title">Log in</h1>
+		  <div class="login__block">
+			<label class="login__label" for="username">
+			  <i class="far fa-user"></i>
+			</label>
+			<input class="login__field" type="text" name="username" id="username" placeholder="Username">
+		  </div>
+		  <div class="login__block">
+			<label class="login__label" for="password">
+			  <i class="fas fa-lock"></i>
+			</label>
+			<input class="login__field" type="password" name="password" id="password" placeholder="Password">
+			<i class="login__show-pass far fa-eye"></i>
+		  </div>
+		  <p class="login__forgot">Forgot your password? <i class="far fa-question-circle"></i></p>
+		  <button type="button" class="login__button"><span>Login to your account</span></button>
 		</form>
-	</section>
+	  </section>
 
-	<section class="dashboard">
-		You're logged succesfully!
-	</section>
+	<div class="main container-fluid">
+		<div class="row">
+			<aside class="navbar">
+				<p class="logo"><span>My</span> Team</p>
+				<ul class="actions">
+					<li id="showEmployee">
+						<i class="far fa-list-alt"></i>
+						<span>Show Employee List</span>
+					</li>
+					<li id="addEmployee">
+						<i class="fas fa-folder-plus"></i>
+						<span>Add New Employee</span>
+					</li>
+				</ul>
+			</aside>
+			<section class="content col">
+				<h1 class="title">Dashboard</h1>
+
+				<!-- this DIV for cloning -->
+				<div class="list__actions">
+					<div class="edit">
+						<i class="far fa-edit"></i>
+					</div>
+					<div class="delete">
+						<i class="far fa-trash-alt"></i>
+					</div>
+				</div>
+				<!-- this DIV for cloning -->
+
+				<ul class="list">
+					<li class="list__header">
+						<div class="list__number">#</div>
+						<div class="list__name">Employee Name</div>
+						<div class="list__role">Role</div>
+						<div class="list__phone">Phone</div>
+						<div class="list__actions"></div>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+
+	<div class="window-overlay">
+		<div class="window">
+			<h1 class="window__title">
+				<span>Add/Edit Employee</span>
+				<div class="close-btn">
+					<i class="fas fa-times"></i>
+				</div>
+			</h1>
+			<form action="#" class="form">
+				<div class="form__field">
+					<label for="firstName">First Name</label>
+					<input type="text" name="first-name" id="firstName">
+				</div>
+				<div class="form__field">
+					<label for="lastName">Last Name</label>
+					<input type="text" name="last-name" id="lastName">
+				</div>
+				<div class="form__field form__field--dropdown">
+					<label for="roleDropdown">Role</label>
+					<select name="role" id="roleDropdown"></select>
+				</div>
+				<div class="form__field">
+					<label for="phone">Phone Number</label>
+					<input type="tel" name="phone" id="phone">
+				</div>
+				<button type="button" class="save">Save</button>
+			</form>
+		</div>
+	</div>
 
 	<!-- Scripts -->
-	<script src="js/libs/jquery-3.4.0.min.js"></script>
+	<script src="js/libs/jquery-3.5.1.min.js"></script>
 	<script src="js/main.js"></script>
-
-	<!-- LiveReload Script -->
-	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+	<script src="js/login.js"></script>
 </body>
 </html>

@@ -1,119 +1,230 @@
 'use strict';
 
-(function($){
-	$(document).ready(function(){
-		// Users
-		var users = [
-			{
-				username: 'Admin',
-				password: 'Qwerty'
-			},
-			{
-				username: 'Joker',
-				password: 'Batman'
-			}
-		],
-		alerts = {
-			wrongUsername: 'Please, fill right Username first',
-			tipPassword: 'Your password is ',
-			emptyFields: 'Please fill all fields to proceed authorization',
-			noUsername: 'There is no user with such Username found. Please, try again',
-			wrongPassword: 'Your password is wrong. PLease, try again'
-		};
+class Preloader {
+    constructor() {
+        this.content = document.querySelector('.content');
+    }
 
-		// Show password
-		$('.login__show-pass').click(function() {
-			var elem = $(this).parents('.login__block').find('.login__field');
+    show() {
+        this.content.classList.add('loading');
+    }
 
-			elem.attr('type', 'text');
+    hide() {
+        this.content.classList.remove('loading');
+    }
+}
 
-			setTimeout(() => {
-				elem.attr('type', 'password');
-			}, 3000);
-		});
+class Employee {
+    constructor(
+        firstName,
+        lastName,
+        role,
+        phone
+        ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.phone = phone;
+        this.id = `${lastName.toLowerCase()}-${(Math.random()*100000).toFixed()}`;
+    }
 
-		// Forgot password
-		$('.login__forgot').mouseenter(function() {
-			var user = $('#username').val(),
-				rightUser,
-				message;
+    getFullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
+}
 
-			rightUser = findUserByUsername(user);
+class Window {
+    constructor(employee) {
+        this.employee = employee;
+        this.window = document.querySelector('.window-overlay');
 
-			if (rightUser) {
-				message = alerts.tipPassword + rightUser.password;
-			} else {
-				message = alerts.wrongUsername;
-			}
+        this.roles = ['Admin', 'Writer', 'Musician', 'Actor', 'Engineer', 'Doctor'];
 
-			$(this).append(`<span>${message}</span>`);
-		});
+        this.addRoles();
+    }
 
-		$('.login__forgot').mouseleave(function() {
-			$(this).find('span').remove();
-		});
+    addRoles() {
+        roleDropdown.innerHTML = '';
+        
+        this.roles.forEach(role => {
+            roleDropdown.innerHTML += `<option value="${role}">${role}</option>`;
+        });
+    }
 
-		// Validate user
-		$('.login__button').click(function() {
-			var usernameVal = $('#username').val(),
-				passwordVal = $('#password').val(),
-				rightUser;
+    show() {
+        if (this.employee) {
+            firstName.value = this.employee.firstName;
+            lastName.value = this.employee.lastName;
+            phone.value = this.employee.phone;
+            roleDropdown.value = this.employee.role;
+            this.window.dataset.id = this.employee.id;
+        }
+        
+        this.window.classList.add('show');
+    }
 
-			$('.login__error').remove();
-			$('.login__block').removeClass('invalid');
+    hide() {
+        firstName.value = '';
+        lastName.value = '';
+        phone.value = '';
+        roleDropdown.value = roleDropdown[0].value;
+        this.window.dataset.id = '';
 
-			if (usernameVal == '' || passwordVal == '') {
-				showWarning(alerts.emptyFields);
-				return;
-			}
+        this.window.classList.remove('show');
+    }
 
-			rightUser = findUserByUsername(usernameVal);
+    save() {
+        if (firstName.value === '' ||
+            lastName.value === '' ||
+            phone.value === '') {
+                showWarning('Please, fill all fields');
+                return;
+        }
 
-			if (!rightUser) {
-				generateError('#username', alerts.noUsername);
+        let item = localStorage.getItem('employeeList'),
+            list = item ? JSON.parse(item) : [],
+            employee = new Employee(firstName.value, lastName.value, roleDropdown.value, phone.value);
 
-				return;
-			}
+        employee.id = this.window.dataset.id || employee.id;
 
-			if (rightUser.password == passwordVal) {
-				$('.login, .dashboard').animate({'top': '-100vh'}, 1000);
-			} else {
-				generateError('#password', alerts.wrongPassword);
-			}
-		});
+        let i = list.findIndex(elem => elem.id === employee.id);
 
-		// Generate error
-		function generateError(elem, message) {
-			var span = document.createElement('span');
+        if (i !== -1) {
+            list[i] = employee;
+        } else {
+            list.push(employee);
+        }
 
-			$(span).addClass('login__error').text(message);
-			$(span).insertAfter(elem);
+        localStorage.setItem('employeeList', JSON.stringify(list));
 
-			$(elem).parents('.login__block').addClass('invalid');
-		};
+        this.hide();
+        showEmployees();
+    }
+}
 
-		// Show warning message
-		function showWarning(message) {
-			$('<div/>').addClass('dialog-overlay').appendTo('body');
-			$('<div/>').addClass('dialog').html(`<p>${message}</p>`).appendTo('body');
+class Draw {
+    constructor() {}
 
-			setTimeout(function(){
-				$('.dialog, .dialog-overlay').remove();
-			}, 3000);
-		}
+    render(employee, counter) {
+        let item = document.createElement('li'),
+            number = document.createElement('div'),
+            name = document.createElement('div'),
+            role = document.createElement('div'),
+            phone = document.createElement('div'),
+            actions = document.querySelector('.list__actions').cloneNode(true);
 
-		// Find user
-		function findUserByUsername(userValue) {
-			var user;
+        // Add Classes
+        item.className = 'list__item';
+        number.className = 'list__number';
+        name.className = 'list__name';
+        role.className = 'list__role';
+        phone.className = 'list__phone';
 
-			$.each(users, (i, item) => {
-				if (item.username == userValue) {
-					user = item;
-					return false;
-				}
-			});
+        // Add Text
+        number.innerText = counter;
+        name.innerText = `${employee.firstName} ${employee.lastName}`;
+        role.innerText = employee.role;
+        phone.innerText = employee.phone;
 
-			return user;
-		}
-	});
-})(jQuery);
+        // Event
+        actions.querySelector('.edit').addEventListener('click', () => {
+            this.edit(employee);
+        });
+
+        actions.querySelector('.delete').addEventListener('click', () => {
+            this.delete(employee);
+        });
+
+        // Append all items
+        item.append(number, name, role, phone, actions);
+
+        return item;
+    }
+
+    edit(employee) {
+        let windowEdit = new Window(employee);
+        windowEdit.show();
+    }
+
+    delete(employee) {
+        let confirmation = window.confirm(`Are you sure that you want to delete ${employee.firstName} ${employee.lastName}`);
+
+        if (confirmation) {
+            let list = JSON.parse(localStorage.getItem('employeeList'));
+
+            for (let i = list.length - 1; i >= 0; i--) {
+                if (list[i].id === employee.id) {
+                    list.splice(i, 1);
+                    break;
+                }
+            }
+    
+            localStorage.setItem('employeeList', JSON.stringify(list));
+            showEmployees();
+        }
+    }
+}
+
+let employeeWindow = new Window();
+addEmployee.addEventListener('click', () => {
+    employeeWindow.show();
+});
+
+let closeBtn = document.querySelector('.close-btn');
+closeBtn.addEventListener('click', () => {
+    employeeWindow.hide();
+});
+
+let saveBtn = document.querySelector('.save');
+saveBtn.addEventListener('click', () => {
+    employeeWindow.save();
+});
+
+let showEmployeesBtn = document.getElementById('showEmployee');
+showEmployeesBtn.addEventListener('click', showEmployees);
+
+// Show Employees List
+function showEmployees() {
+    let employeeList = JSON.parse(localStorage.getItem('employeeList')),
+        list = document.querySelector('.list'),
+        listItems = document.querySelectorAll('.list__item');
+
+    if (employeeList === null) {
+        showWarning('Add Employee first!');
+        return;
+    }
+
+    listItems.forEach(item => {
+        item.remove();
+    });
+
+    let preloader = new Preloader();
+    preloader.show();
+
+    employeeList.forEach((item, i) => {
+        list.append(new Draw().render(item, i + 1));
+    });
+
+    setTimeout(() => {
+        preloader.hide();
+    }, 500);
+    
+}
+
+// Warning
+function showWarning(msg) {
+    let dialog = document.createElement('div'),
+        dialogOverlay = document.createElement('div');
+
+    dialogOverlay.className = 'dialog-overlay';
+    dialog.className = 'dialog';
+
+    dialog.innerHTML = `<p>${msg}</p>`;
+
+    document.body.append(dialogOverlay, dialog);
+
+    setTimeout(() => {
+        dialogOverlay.remove();
+        dialog.remove();
+    }, 3000);
+}
